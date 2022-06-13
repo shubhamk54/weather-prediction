@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sapient-weather-prediction
+  labels:
+    app: sapient-weather-prediction
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sapient-weather-prediction
+  template:
+    metadata:
+      labels:
+        app: sapient-weather-prediction
+    spec:
+      containers:
+      - name: sapient-weather-prediction
+        image: $DOCKER_IMAGE
+        env:
+          - name: API_KEY_WEATHER_APP
+            valueFrom:
+              secretKeyRef:
+                name: api-secretes
+                key: API_KEY_WEATHER_APP
+        ports:
+        - containerPort: 8080
